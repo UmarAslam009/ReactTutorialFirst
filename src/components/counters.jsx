@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Counter from "./counter";
+
 class counters extends Component {
   state = {
     counter: [
@@ -9,11 +10,22 @@ class counters extends Component {
       { id: 4, value: 0 }
     ]
   };
+
+  delete = counterID => {
+    const counter = this.state.counter.filter(c => c.id != counterID);
+    this.setState({ counter });
+  };
+
   render() {
     return (
       <div>
-       { this.state.counter.map(counter=>(
-        <Counter key={counter.id} value={counter.value} selected={true} />
+        {this.state.counter.map(item => (
+          <Counter
+            id={item.id}
+            onDelete={this.delete}
+            value={item.value}
+            selected={true}
+          />
         ))}
       </div>
     );
