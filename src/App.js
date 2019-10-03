@@ -1,26 +1,53 @@
 import React from 'react';
-import logo from './logo.svg';
+import NavBar from './components/navbar.jsx'
+import Counters from './components/counters'
 import './App.css';
 
-function App() {
+class App extends React.Component {
+    state = {
+    counter: [
+      { id: 1, value: 4 },
+      { id: 2, value: 0 },
+      { id: 3, value: 0 },
+      { id: 4, value: 0 }
+    ]
+  };
+
+  increment = counter => {
+    const counters=[...this.state.counter];
+    const index=counters.indexOf(counter);
+    counters[index].value++;
+    this.setState({ counter:counters });
+  };
+
+  Handledelete = counterID => {
+      console.log(counterID);
+    const counter = this.state.counter.filter(c => c.id != counterID);
+    this.setState({ counter });
+  };
+
+  reset = () => {
+    console.log("resset is called");
+    const counter = this.state.counter.map(c => {
+      c.value = 0;
+      return c;
+    });
+    this.setState({ counter });
+
+  };
+ render(){
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <React.Fragment>
+    <NavBar totalCounter={this.state.counter.length}/>
+    <main className="container">
+      <Counters
+        counter={this.state.counter}
+        onReset={this.reset}
+        onIncrement={this.increment}
+        onDelete={this.Handledelete}/>
+    </main>
+    </React.Fragment>
+  );}
 }
 
 export default App;
